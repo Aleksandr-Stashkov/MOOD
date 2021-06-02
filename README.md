@@ -1,2 +1,2 @@
 # MOOD
- 3D Shooter Exercise for Unity Course
+ 3D Shooter (part of a Udemy course)

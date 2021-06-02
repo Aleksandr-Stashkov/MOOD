@@ -72,4 +72,7 @@ Assets/Scenes/
 Assets/Scenes.meta
 Assets/Sprites/
 Assets/TextMesh Pro/
+Assets/Game/
+Assets/Game.meta
 *.log
+.vsconfig

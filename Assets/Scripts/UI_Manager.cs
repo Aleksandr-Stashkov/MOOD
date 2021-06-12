@@ -13,7 +13,6 @@ public class UI_Manager : MonoBehaviour
     {
         FindObjects();
 
-        CrosshairColor(false);
         _coin.SetActive(false);
     }      
     
@@ -68,19 +67,7 @@ public class UI_Manager : MonoBehaviour
             Debug.LogError("UI Manager could not locate Ammo Text.");
         }
     }
-
-    public void CrosshairColor(bool canShoot)
-    {
-        if (canShoot)
-        {
-            _img_Crosshair.color = new Color(0.9056604f, 0.3631186f, 0.4069262f);
-        }
-        else
-        {
-            _img_Crosshair.color = new Color(1f, 1f, 1f);
-        }
-    }
-
+    
     public void UpdateAmmo(int ammo)
     {
         _txt_Ammo.text = ammo.ToString();

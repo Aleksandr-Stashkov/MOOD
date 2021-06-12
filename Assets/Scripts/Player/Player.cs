@@ -4,19 +4,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private CharacterController _charaterController;
-    private Transform _camera;
     [SerializeField]
     private Transform _weapon;
     private ParticleSystem _muzzleFlash;
     private AudioSource _audio_Fire;
     private UI_Manager _UI_Manager;
     [SerializeField]
-    private GameObject _hitMarker;
-
-    private float _speed = 3.5f;
-    private float _mouseSensitivity = 200f;
-    private float _verticalVelocity;
+    private GameObject _hitMarker;    
 
     private int _maxAmmo = 100;
     private int _ammo;
@@ -42,8 +36,6 @@ public class Player : MonoBehaviour
 
     private void FindObjects()
     {
-        _charaterController = GetComponent<CharacterController>();
-        
         if (_hitMarker == null)
         {
             Debug.LogError("Player could not locate Hit Marker Prefab.");
@@ -62,22 +54,6 @@ public class Player : MonoBehaviour
         }
 
         Transform child;
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            child = transform.GetChild(i);
-            if (child == null)
-            {
-                Debug.LogError("Player could not locate its child.");
-            }
-            else
-            {
-                if (child.CompareTag("MainCamera"))
-                {
-                    _camera = child;
-                }
-            }
-        }
-
         if (_weapon == null)
         {
             Debug.LogError("Player could not locate Weapon.");
@@ -118,14 +94,6 @@ public class Player : MonoBehaviour
 
     private void CheckObjects()
     {
-        if (_camera == null)
-        {
-            Debug.LogError("Player could not locate Main Camera.");
-        }
-        if (_charaterController == null)
-        {
-            Debug.LogError("Player could not locate the Character Controller component.");
-        }
         if (_UI_Manager == null)
         {
             Debug.LogError("Player could not locate UI Manager");
@@ -141,10 +109,7 @@ public class Player : MonoBehaviour
     }
 
     private void Update()
-    {
-        Move();
-        Rotate();
-
+    {  
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.visible = true;
@@ -157,36 +122,7 @@ public class Player : MonoBehaviour
         }
 
         Shoot();        
-    }
-
-    private void Move()
-    {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        Vector3 motionVector = new Vector3(horizontalInput, 0, verticalInput);
-        motionVector *= _speed * Time.deltaTime;
-
-        if (_charaterController.isGrounded && _verticalVelocity != 0)
-        {
-            _verticalVelocity = 0;
-        }        
-        motionVector.y = _verticalVelocity * Time.deltaTime;
-
-        _charaterController.Move(transform.TransformDirection(motionVector));
-    }
-
-    private void Rotate()
-    {
-        float mouseX = Input.GetAxis("Mouse X") * _mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * _mouseSensitivity;
-
-        transform.rotation *= Quaternion.Euler(0, mouseX * Time.deltaTime, 0);
-
-        float initialAngleY = _camera.rotation.eulerAngles.x;
-        float angleY = -Mathf.Clamp(Mathf.DeltaAngle(initialAngleY - mouseY * Time.deltaTime,0), -68f, 60f) + Mathf.DeltaAngle(initialAngleY,0);
-        _camera.rotation *= Quaternion.Euler(angleY, 0, 0);
-    }
+    }    
 
     private void Shoot()
     {
